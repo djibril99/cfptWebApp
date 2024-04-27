@@ -18,9 +18,12 @@ from django.contrib import admin
 from django.urls import path
 from gestion_utilisateurs import urls as gestion_utilisateurs_urls
 from django.conf.urls import include
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(gestion_utilisateurs_urls), name='gestion_utilisateurs'),
     path('formations/', include('gestions_formations.urls') , name='gestions_formations'),
     path('messages/', include('gestions_messages.urls') , name='gestions_messages'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
