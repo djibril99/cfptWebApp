@@ -15,6 +15,7 @@ class Utilisateur(User):
     phone = models.CharField(max_length=20, null=True, blank=True)
     fonction = models.CharField(max_length=100, null=True, blank=True)
     entreprise = models.ForeignKey('gestions_formations.Entreprise', on_delete=models.CASCADE, null=True)
+    symboles_cibles = models.CharField(max_length=500, null=True, blank=True)
     #chanp pour les lecteur nfc et qr code
 
     nfcTag = models.CharField(max_length=120, null=True, blank=True)

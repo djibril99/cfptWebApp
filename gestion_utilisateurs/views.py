@@ -79,13 +79,6 @@ def serialiserGetUser(request):
     utilisateurs = Utilisateur.objects.all()
     serializer = UtilisateurSerializer(utilisateurs, many=True)
     data= serializer.data
-    for utilisateur_data in data:
-        type = utilisateur_data['type']
-        if(type == "Prestataire"):
-            prestataire = Prestataire.objects.filter(utilisateur=utilisateur_data['id']).first()
-            serializer = PrestataireSerializer(prestataire)
-            utilisateur_data['prestataire'] = serializer.data
-   
     json_data = json.dumps(data)
     return HttpResponse(json_data, content_type='application/json')
 
@@ -93,11 +86,6 @@ def serialiserGetUserById(request, utilisateur_id):
     utilisateur = Utilisateur.objects.filter(id=utilisateur_id).first()
     serializer = UtilisateurSerializer(utilisateur)
     data = serializer.data
-    if(utilisateur.type == "Prestataire"):
-        prestataire = Prestataire.objects.filter(utilisateur=utilisateur).first()
-        serializer = PrestataireSerializer(prestataire)
-        data['prestataire'] = serializer.data
-    print(type(data))
     json_data = json.dumps(data)
     return HttpResponse(json_data, content_type='application/json')
 
@@ -117,12 +105,6 @@ def serialiserGetUserByWord(request, word):
     
     serializer = UtilisateurSerializer(utilisateurs, many=True)
     data = serializer.data
-    for utilisateur_data in data:
-        type = utilisateur_data['type']
-        if(type == "Prestataire"):
-            prestataire = Prestataire.objects.filter(utilisateur=utilisateur_data['id']).first()
-            serializer = PrestataireSerializer(prestataire)
-            utilisateur_data['prestataire'] = serializer.data
     json_data = json.dumps(data)
     return HttpResponse(json_data, content_type='application/json')
 
@@ -140,16 +122,10 @@ def SetQrTag(request, utilisateur_id, tag):
     return HttpResponse("ok", content_type='application/json')
 
 def readNfcTag(request, tag):
-    print(tag)
     utilisateur = Utilisateur.objects.filter(nfcTag=tag).first()
-    print(utilisateur)
     if utilisateur:
         serializer = UtilisateurSerializer(utilisateur)
         data = serializer.data
-        if(utilisateur.type == "Prestataire"):
-            prestataire = Prestataire.objects.filter(utilisateur=utilisateur).first()
-            serializer = PrestataireSerializer(prestataire)
-            data['prestataire'] = serializer.data
         json_data = json.dumps(data)
         return HttpResponse(json_data, content_type='application/json')
     else:
@@ -159,10 +135,6 @@ def readQrTag(request, tag):
     if utilisateur:
         serializer = UtilisateurSerializer(utilisateur)
         data = serializer.data
-        if(utilisateur.type == "Prestataire"):
-            prestataire = Prestataire.objects.filter(utilisateur=utilisateur).first()
-            serializer = PrestataireSerializer(prestataire)
-            data['prestataire'] = serializer.data
         json_data = json.dumps(data)
         return HttpResponse(json_data, content_type='application/json')
     else:

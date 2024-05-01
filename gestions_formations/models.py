@@ -5,12 +5,7 @@ from gestion_utilisateurs.models import Utilisateur
 
 class Formation(models.Model):
     libelle = models.CharField(max_length=100)
-    symboles_cibles = models.CharField(max_length=100, null=True, blank=True)
-    validite = models.DateField(default=(timezone.now() + datetime.timedelta(days=365)))
-    #prestataires = models.ManyToManyField(Utilisateur , related_name='formations', blank=True)
-    #date_debut = models.DateField(default=timezone.now)
-    #la duree est de 3 mois par defaut
-    #date_fin = models.DateField( null=True) #default=(timezone.now() + datetime.timedelta(days=90)) 
+    validite = models.DateField(default=(timezone.now() + datetime.timedelta(days=1096)))
 
     def __str__(self):
         return self.libelle
