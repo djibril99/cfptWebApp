@@ -6,6 +6,7 @@ class Utilisateur(User):
     profil = models.ImageField(upload_to='profil/', null=True, blank=True)
     date_naissance = models.DateField(null=True, blank=True)
     address = models.CharField(max_length=200, null=True, blank=True)
+    cni = models.CharField(max_length=30, null=True, blank=True)
     TYPE = (
         ('Agent', 'Agent'),
         ('Prestataire', 'Prestataire'),
