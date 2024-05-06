@@ -23,6 +23,8 @@ urlpatterns = [
     path('api/utilisateurs/', views.serialiserGetUser, name="utilisateurs"),
     path('api/utilisateurs/<int:utilisateur_id>/', views.serialiserGetUserById, name="utilisateur"),
     path('api/utilisateurs/search/<str:word>/', views.serialiserGetUserByWord, name="searchUser"),
+    path('api/utilisateurs/uploadProfil/', views.upload_file, name="uploadProfil"),
     path('api/readByNfc/<str:tag>/', views.readNfcTag, name="readNfc"),
     path('api/readByQr/<str:tag>/', views.readQrTag, name="readQr"),
+   
 ]

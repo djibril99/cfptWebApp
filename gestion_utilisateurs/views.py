@@ -139,3 +139,14 @@ def readQrTag(request, tag):
         return HttpResponse(json_data, content_type='application/json')
     else:
         return HttpResponse("not found", content_type='application/json')
+    
+
+def upload_file(request):
+    if request.method == 'POST' and request.FILES['file'] and 'userId' in request.POST:
+        uploaded_file = request.FILES['file']
+        user_id = request.POST['userId']
+        user = Utilisateur.objects.get(id=user_id)
+        user.image = uploaded_file
+        user.save()
+        return HttpResponse('File uploaded and saved successfully for user {}'.format(user_id))
+    return HttpResponse('Failed to upload file')
