@@ -3,6 +3,8 @@ from django.http import HttpResponse  , HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.template import loader
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
+
 
 from .serializers import * #import forms
 from .forms import UtilisateurForm
@@ -145,6 +147,7 @@ def readQrTag(request, tag):
         return HttpResponse("not found", content_type='application/json')
     
 #recevoir une image et l'associer a un utilisateur
+@csrf_exempt
 def upload_file(request):
     if request.method == 'POST' and request.FILES['file'] and 'userId' in request.POST:
         uploaded_file = request.FILES['file']
