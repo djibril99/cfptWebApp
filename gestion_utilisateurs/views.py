@@ -10,6 +10,10 @@ from .models import Utilisateur , Prestataire
 
 import json
 
+import openpyxl
+from io import BytesIO
+
+
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -140,13 +144,49 @@ def readQrTag(request, tag):
     else:
         return HttpResponse("not found", content_type='application/json')
     
-
+#recevoir une image et l'associer a un utilisateur
 def upload_file(request):
     if request.method == 'POST' and request.FILES['file'] and 'userId' in request.POST:
         uploaded_file = request.FILES['file']
         user_id = request.POST['userId']
         user = Utilisateur.objects.get(id=user_id)
-        user.image = uploaded_file
+        user.profil = uploaded_file
         user.save()
         return HttpResponse('File uploaded and saved successfully for user {}'.format(user_id))
     return HttpResponse('Failed to upload file')
+
+#telecharger toute les donnees sur un fichier excel
+
+
+def excel_download_view(request):
+    # Récupérer les données du modèle
+    queryset = Prestataire.objects.all()
+
+    # Créer un nouveau classeur Excel
+    workbook = openpyxl.Workbook()
+    worksheet = workbook.active
+
+    # Ajouter des en-têtes de colonne
+    headers = ["Identifiant", "Date de Naissance", "Prenom", "Nom", "Entreprise", "Telephone", "Fonction", "Date d'expiration", "Titre Habilitation", "CNI"]
+    worksheet.append(headers)
+
+    # Ajouter les données du modèle au classeur Excel
+    for prestataire in queryset:
+        user = prestataire.utilisateur
+        formation = prestataire.formation
+        row = [user.id, user.date_naissance.strftime('%d/%m/%Y'), user.first_name , user.last_name, user.entreprise.nom, user.phone, user.fonction, formation.validite.strftime('%d/%m/%Y'), user.symboles_cibles, user.cni]
+        worksheet.append(row)
+
+    # Créer un flux BytesIO pour stocker le fichier Excel
+    excel_file = BytesIO()
+    workbook.save(excel_file)
+    excel_file.seek(0)
+
+    # Créer une réponse HTTP pour le fichier Excel
+    response = HttpResponse(
+        excel_file,
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename="donnees.xlsx"'
+
+    return response

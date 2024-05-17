@@ -15,7 +15,7 @@ class UtilisateurSerializer(serializers.ModelSerializer):
     entreprise = EntrepriseSerializer( read_only=True)
     class Meta:
         model = Utilisateur
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'date_naissance', 'address', 'cni','type', 'phone', 'profil', 'fonction', 'entreprise', 'qrTag', 'nfcTag', 'prestataire', 'formation')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'date_naissance', 'address', 'cni','type', 'phone', 'profil', 'fonction', 'entreprise', 'qrTag', 'nfcTag', 'prestataire', 'formation','symboles_cibles')
 
     def get_formation(self, obj):
         if obj.type == 'Prestataire' and hasattr(obj, 'prestataire') and obj.prestataire.formation:

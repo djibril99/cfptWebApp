@@ -26,5 +26,5 @@ urlpatterns = [
     path('api/utilisateurs/uploadProfil/', views.upload_file, name="uploadProfil"),
     path('api/readByNfc/<str:tag>/', views.readNfcTag, name="readNfc"),
     path('api/readByQr/<str:tag>/', views.readQrTag, name="readQr"),
-   
+     path('telecharger-excel/', views.excel_download_view, name='excel_download'),
 ]
